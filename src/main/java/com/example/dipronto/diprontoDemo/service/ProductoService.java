@@ -7,6 +7,10 @@ import java.util.List;
 
 @Repository
 public interface ProductoService {
-    Producto addProducto(Producto producto);
-    List<Producto> verProducto();
+    Producto addPro(Producto producto);
+    List<Producto> findAllPro();
+    void deletePro(Long id);
+    Producto updatePro(Producto producto);
+    Producto findByIdPro(Long id);
+
 }

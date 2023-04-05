@@ -7,10 +7,11 @@ import java.util.Optional;
 
 public interface CategoriaService {
 
-    Categoria addCategoria(Categoria categoria);
-    Optional<Categoria> findById(Long id);
-    List<Categoria> findAll();
-    void deleteCategoria(Long id);
-
+    Categoria addCat(Categoria categoria);
+    Optional<Categoria> findByIdCat(Long id);
+    List<Categoria> findAllCat();
+    void deleteCat(Long id);
+    Categoria updateCat(Categoria categoria);
+    Categoria findByNombre(String nombre);
 
 }

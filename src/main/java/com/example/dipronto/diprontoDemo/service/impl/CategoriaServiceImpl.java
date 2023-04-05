@@ -17,25 +17,49 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 
     @Override
-    public Categoria addCategoria(Categoria categoria) {
+    public Categoria addCat(Categoria categoria) {
         return this.daoCategoria.save(categoria);
     }
 
     @Override
-    public void deleteCategoria(Long id) {
-        Optional<Categoria> categoria = findById(id);
-        if (!categoria.isEmpty()){
+    public void deleteCat(Long id) {
+        Optional<Categoria> categoria = findByIdCat(id);
+        if (!categoria.isEmpty()) {
             daoCategoria.delete(categoria.get());
         }
     }
 
     @Override
-    public Optional<Categoria> findById(Long id) {
+    public Categoria updateCat(Categoria categoria) {
+        Optional<Categoria> cat = findByIdCat(categoria.getId());
+        Categoria updateCat = cat.get();
+        if (updateCat.getId() > 0) {
+            updateCat.setId(categoria.getId());
+            updateCat.setNombre(categoria.getNombre());
+            daoCategoria.save(updateCat);
+
+        }
+        return updateCat;
+    }
+
+    @Override
+    public Optional<Categoria> findByIdCat(Long id) {
         return this.daoCategoria.findById(id);
     }
 
     @Override
-    public List<Categoria> findAll() {
+    public List<Categoria> findAllCat() {
         return (List<Categoria>) this.daoCategoria.findAll();
+    }
+
+    @Override
+    public Categoria findByNombre(String nombre) {
+       Categoria cat = this.daoCategoria.findByNombre(nombre);
+       if (cat.getId() != 0){
+           return cat;
+       }else{
+          throw new NullPointerException();
+       }
+
     }
 }

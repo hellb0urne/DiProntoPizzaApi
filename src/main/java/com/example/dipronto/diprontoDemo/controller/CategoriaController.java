@@ -3,7 +3,9 @@ package com.example.dipronto.diprontoDemo.controller;
 import com.example.dipronto.diprontoDemo.entity.Categoria;
 import com.example.dipronto.diprontoDemo.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,19 +17,34 @@ public class CategoriaController {
     private final CategoriaService categoriaService;
 
 
-    @PostMapping("/addCategoria")
+    @PostMapping("/agregarCategoria")
     Categoria addCategoria(@RequestBody Categoria categoria){
-        return this.categoriaService.addCategoria(categoria);
+        return this.categoriaService.addCat(categoria);
     }
 
-    @GetMapping("/findAll")
-    List<Categoria> findAll(){
-        return this.categoriaService.findAll();
+    @GetMapping("/buscarCategoria")
+    List<Categoria> findAllCat(){
+        return this.categoriaService.findAllCat();
     }
 
-    @DeleteMapping("/deleteCat/{id}")
-    void deleteCat(@PathVariable("id")Long id){
-        categoriaService.deleteCategoria(id);
+    @DeleteMapping("/borrarCategoria/{id}")
+    void deleteCat(@PathVariable Long id){
+        categoriaService.deleteCat(id);
+    }
+
+    @PutMapping("/actualizaCategoria")
+    public Categoria updateCat(@RequestBody Categoria categoria){
+        return this.categoriaService.updateCat(categoria);
+    }
+
+    @GetMapping("/buscarCategoria/{nombre}")
+    Categoria findByNombre(@PathVariable String nombre){
+        try {
+           return this.categoriaService.findByNombre(nombre);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nombre no existe", e.getCause());
+        }
+
     }
 
 
