@@ -2,10 +2,13 @@ package com.example.dipronto.diprontoDemo.service.impl;
 
 import com.example.dipronto.diprontoDemo.entity.Categoria;
 import com.example.dipronto.diprontoDemo.entity.Producto;
+import com.example.dipronto.diprontoDemo.exception.CustomException;
+import com.example.dipronto.diprontoDemo.repository.DaoCategoria;
 import com.example.dipronto.diprontoDemo.repository.DaoProducto;
 import com.example.dipronto.diprontoDemo.service.CategoriaService;
 import com.example.dipronto.diprontoDemo.service.ProductoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +23,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto addPro(Producto producto) {
-        Optional<Categoria> categoria = this.categoriaService.findByIdCat(Long.valueOf(producto.getCategoria()));
+        Optional<Categoria> categoria = this.categoriaService.findByIdCat(producto.getCategoria());
         Categoria cat = categoria.get();
         Producto p = new Producto();
         p.setId(producto.getId());
@@ -38,20 +41,15 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Producto findByIdPro(Long id) {
-        Optional<Producto> producto = this.daoProducto.findById(id);
-        Producto p = new Producto();
-        if (producto != null) {
-            p = producto.get();
-        }
-        return p;
+        return daoProducto.findById(id).orElseThrow(() -> new CustomException("Categoria no existe", HttpStatus.BAD_REQUEST));
+
     }
 
     @Override
     public void deletePro(Long id) {
         Producto p = findByIdPro(id);
-        if (p != null) {
-            this.daoProducto.delete(p);
-        }
+        this.daoProducto.delete(p);
+
     }
 
     @Override
