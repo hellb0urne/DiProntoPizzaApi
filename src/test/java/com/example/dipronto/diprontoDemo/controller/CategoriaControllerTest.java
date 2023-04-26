@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +24,7 @@ class CategoriaControllerTest {
     @InjectMocks
     private CategoriaController categoriaController;
 
+    /*
     @Test
     void addCategoria() {
         Categoria categoria = new Categoria();
@@ -32,8 +35,6 @@ class CategoriaControllerTest {
         assertNotNull(categoria);
 
     }
-
-    /*
 
     @Test
     void findAllCat() {
@@ -47,17 +48,35 @@ class CategoriaControllerTest {
         assertEquals(categoriaList.size(), 1);
     }
 
+
     @Test
-    void deleteCat() {
+    void deleteCat(){
+        long id = 1;
+        Categoria categoria = new Categoria();
+        categoria.setId(1L);
+        categoria.setNombre("Promociones Familiares");
+        categoriaController.deleteCat(id);
+
+
     }
+
 
     @Test
     void updateCat() {
+        Categoria categoria = new Categoria();
+        categoria.setId(1L);
+        categoria.setNombre("Promociones Familiares");
+        Mockito.when(categoriaService.updateCat(categoria)).thenReturn(categoria);
+        Categoria categoria1 = categoriaController.updateCat(categoria);
+        categoria.setId(3L);
+        assertEquals(categoria.getNombre(), categoria1.getNombre());
     }
+    /*
 
     @Test
     void findByIdCat() {
     }
 
      */
+
 }

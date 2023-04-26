@@ -21,12 +21,13 @@ public class CategoriaController {
         return this.categoriaService.addCat(categoria);
 
     }
+  /*
 
-    /*
     @GetMapping("/buscarCategoria")
     List<Categoria> findAllCat() {
         return this.categoriaService.findAllCat();
     }
+
 
     @DeleteMapping("/borrarCategoria/{id}")
     void deleteCat(@PathVariable Long id) {
@@ -37,7 +38,7 @@ public class CategoriaController {
     public Categoria updateCat(@RequestBody Categoria categoria) {
         return this.categoriaService.updateCat(categoria);
     }
-
+    /*
     @GetMapping("/findById/{id}")
     public Optional<Categoria> findByIdCat(@PathVariable Long id){
         return this.categoriaService.findByIdCat(id);

@@ -18,6 +18,11 @@ public class CategoriaServiceImpl implements CategoriaService {
     private final DaoCategoria daoCategoria;
 
     @Override
+    public Optional<Categoria> findByIdCat(Long id) {
+        return Optional.ofNullable(daoCategoria.findById(id).orElseThrow(() -> new CustomException("El Id no existe", HttpStatus.BAD_REQUEST)));
+    }
+
+    @Override
     public Categoria addCat(Categoria categoria){
         Categoria cat = findByNombre(categoria.getNombre());
         if (cat == null) {
@@ -27,13 +32,12 @@ public class CategoriaServiceImpl implements CategoriaService {
             throw new CustomException("Categoria existe", HttpStatus.CONFLICT);
         }
     }
-
-
     @Override
-    public Optional<Categoria> findByIdCat(Long id) {
-        return Optional.ofNullable(daoCategoria.findById(id).orElseThrow(() -> new CustomException("El Id no existe", HttpStatus.BAD_REQUEST)));
+    public Categoria findByNombre(String nombre) {
+        return this.daoCategoria.findByNombre(nombre);
     }
 
+    /*
     @Override
     public void deleteCat(Long id) {
         Optional<Categoria> categoria = findByIdCat(id);
@@ -53,8 +57,6 @@ public class CategoriaServiceImpl implements CategoriaService {
         return (List<Categoria>) this.daoCategoria.findAll();
     }
 
-    @Override
-    public Categoria findByNombre(String nombre) {
-        return this.daoCategoria.findByNombre(nombre);
-    }
+
+     */
 }
