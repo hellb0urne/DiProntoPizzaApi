@@ -7,10 +7,10 @@ import java.util.List;
 
 @Repository
 public interface ProductoService {
+
     Producto addPro(Producto producto);
-    List<Producto> findAllPro();
+    Iterable<Producto> findAllPro();
     void deletePro(Long id);
     Producto updatePro(Producto producto);
-    Producto findByIdPro(Long id);
 
 }

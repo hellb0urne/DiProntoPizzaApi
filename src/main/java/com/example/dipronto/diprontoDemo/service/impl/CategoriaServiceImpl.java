@@ -7,8 +7,8 @@ import com.example.dipronto.diprontoDemo.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,46 +17,51 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     private final DaoCategoria daoCategoria;
 
+
+    @Transactional
     @Override
-    public Optional<Categoria> findByIdCat(Long id) {
-        return Optional.ofNullable(daoCategoria.findById(id).orElseThrow(() -> new CustomException("El Id no existe", HttpStatus.BAD_REQUEST)));
+    public Categoria addCat(Categoria categoria) {
+        final var cat = daoCategoria.findByNombre(categoria.getNombre());
+        if (cat == null) {
+            return daoCategoria.save(categoria);
+        } else {
+            throw new CustomException("La categoria Existe", HttpStatus.CONFLICT);
+        }
+
     }
 
+    @Transactional
     @Override
-    public Categoria addCat(Categoria categoria){
-        Categoria cat = findByNombre(categoria.getNombre());
-        if (cat == null) {
-            this.daoCategoria.save(categoria);
-            return categoria;
+    public Iterable<Categoria> findAllCat() {
+        var categoriaList = daoCategoria.findAll();
+        if (categoriaList.iterator().hasNext()) {
+            return categoriaList;
         } else {
-            throw new CustomException("Categoria existe", HttpStatus.CONFLICT);
+            throw new CustomException("Lista esta vacia", HttpStatus.NO_CONTENT);
         }
     }
+
+    @Transactional
     @Override
-    public Categoria findByNombre(String nombre) {
-        return this.daoCategoria.findByNombre(nombre);
+    public Optional<Categoria> findByIdCat(Long id) {
+        return Optional.of(daoCategoria.findById(id).orElseThrow(() -> new CustomException("El Id no existe", HttpStatus.BAD_REQUEST)));
+
     }
 
-    /*
+    @Transactional(readOnly = true)
     @Override
     public void deleteCat(Long id) {
-        Optional<Categoria> categoria = findByIdCat(id);
-        daoCategoria.delete(categoria.get());
+        var optionalCategoria = findByIdCat(id);
+        Categoria cat = optionalCategoria.get();
+        daoCategoria.delete(cat);
     }
 
+    @Transactional
     @Override
     public Categoria updateCat(Categoria categoria) {
-        Optional<Categoria> cat = findByIdCat(categoria.getId());
-        Categoria updateCat = cat.get();
-        updateCat.setNombre(categoria.getNombre());
-        return updateCat;
+        var cat = findByIdCat(categoria.getId());
+        Categoria categoriaFinal = cat.get();
+        categoriaFinal.setNombre(categoria.getNombre());
+        return daoCategoria.save(categoriaFinal);
     }
-
-    @Override
-    public List<Categoria> findAllCat() {
-        return (List<Categoria>) this.daoCategoria.findAll();
-    }
-
-
-     */
 }

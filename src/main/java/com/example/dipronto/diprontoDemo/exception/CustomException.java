@@ -1,20 +1,14 @@
 package com.example.dipronto.diprontoDemo.exception;
 
-
-import lombok.Data;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Data
+@Getter
 public class CustomException extends RuntimeException {
-    private HttpStatus status;
+    private HttpStatus httpStatus;
 
-    public CustomException(String message, HttpStatus status) {
+    public CustomException(String message, HttpStatus httpStatus) {
         super(message);
-        this.status = status;
-
+        this.httpStatus = httpStatus;
     }
-
-
-
 }
-
