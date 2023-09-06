@@ -5,8 +5,12 @@ import com.example.dipronto.diprontoDemo.exception.InvalidRoleException;
 import com.example.dipronto.diprontoDemo.exception.NullRoleException;
 import com.example.dipronto.diprontoDemo.exception.UserExistException;
 import com.example.dipronto.diprontoDemo.repository.DaoUser;
+import com.example.dipronto.diprontoDemo.security.CustomPasswordEncoder;
 import com.example.dipronto.diprontoDemo.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -14,11 +18,13 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final DaoUser daoUser;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User addUser(User user) {
         validateUserExistence(user);
         validateUserRole(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         daoUser.save(user);
         return user;
     }
@@ -38,6 +44,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidRoleException("El campo 'rol' tiene un valor inválido");
         }
     }
+
 
     private boolean isValidRole(User.Rol rol) {
         return rol == User.Rol.ADMIN || rol == User.Rol.USER;

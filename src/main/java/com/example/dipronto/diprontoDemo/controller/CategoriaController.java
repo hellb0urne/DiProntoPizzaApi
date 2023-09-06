@@ -4,6 +4,7 @@ import com.example.dipronto.diprontoDemo.entity.Categoria;
 import com.example.dipronto.diprontoDemo.service.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,17 +24,20 @@ public class CategoriaController {
 
     }
 
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/buscarCategoria")
     Iterable<Categoria> findAllCat() {
         return this.categoriaService.findAllCat();
     }
 
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/buscarPorId/{id}")
     public Optional<Categoria> findByIdCat(@PathVariable Long id) {
         return this.categoriaService.findByIdCat(id);
     }
+
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/borrarCategoria/{id}")

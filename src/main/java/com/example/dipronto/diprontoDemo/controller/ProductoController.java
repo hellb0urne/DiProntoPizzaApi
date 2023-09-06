@@ -13,17 +13,17 @@ public class ProductoController {
 
     private final ProductoService productoService;
 
+    @GetMapping("/verProductos")
+    public Iterable<Producto> findAllProduct() {
+        return this.productoService.findAllPro();
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/agregarProducto")
     public Producto addProducto(@RequestBody Producto producto){
         return productoService.addPro(producto);
     }
 
-
-    @GetMapping("/verProductos")
-    public Iterable<Producto> findAllProduct() {
-        return this.productoService.findAllPro();
-    }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/actualizarProducto")
